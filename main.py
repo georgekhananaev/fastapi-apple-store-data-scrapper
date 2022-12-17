@@ -22,7 +22,7 @@ tags_metadata = [
 app = FastAPI(title="Apple Store Scrapper",  # noqa
               description=description,
               version="1.0.0",
-              terms_of_service="https://github.com/georgekhananaev/aliexpress-open-api/blob/main/LICENSE",
+              terms_of_service="https://github.com/georgekhananaev/fastapi-apple-store-data-scrapper/blob/master/LICENSE",
               openapi_tags=tags_metadata,
               contact={"name": "George Khananaev", "url": "https://george.khananaev.com", "email": "george.khananaev@gmail.com"})
 
