@@ -54,7 +54,7 @@ async def top_free_apps(app_id: int, country_code: str | None = Query(default="u
         Insert "APP ID" such as: 1643890882, the value should be numbers only.
         The country code can be "us, gb, il" or anything else supported by Apple.
        """
-    return single_app(url=f"https://apps.apple.com/{country_code}/app/netflix/id{app_id}", country_code=country_code)
+    return single_app(url=f"https://apps.apple.com/{country_code}/app/id{app_id}", country_code=country_code)
 
 
 @app.get('/top100-free-apps', tags=["Top Apps"])

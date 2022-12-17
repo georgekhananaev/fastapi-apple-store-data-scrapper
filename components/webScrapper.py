@@ -1,8 +1,23 @@
 import requests
 from bs4 import BeautifulSoup
+from retrying import retry
 
 
-# # In case if you need to scrap free proxies and test them before using, can use this multi-thread functions.
+# Specify an exception you need. or just True"""
+def retry_if_connection_error(exception) -> bool:
+
+    # return True
+    return isinstance(exception, ConnectionError)
+
+
+# if exception retry with 3 second wait
+@retry(retry_on_exception=retry_if_connection_error, wait_fixed=3000)
+def safe_request(url, headers, **kwargs) -> object:
+    return requests.get(url, headers, **kwargs)
+
+
+# # In case if you need to scrap free proxies and to test them before using, can use this multi-thread functions.
+# # I created most of it, but this is too much work messing with free proxy servers. I decided to leave it as it for now, there also some risks involved using free proxies.
 #
 # from lxml.html import fromstring
 # from itertools import cycle
@@ -50,6 +65,7 @@ from bs4 import BeautifulSoup
 #     results = executor.map(check_if_good_proxy, proxies)
 
 # default proxies list
+
 select_proxies = {
     "https": '34.175.45.228:3128',
     "SOCKS5": '173.212.195.109:3481'
@@ -69,13 +85,15 @@ def scrapper(*args):
     url = args[0]
     try:
         # timeout for proxy is 2 seconds
-        req = requests.get(url, headers, proxies=select_proxies, timeout=5)
+        # req = requests.get(url, headers, proxies=select_proxies, timeout=5)
+        req = safe_request(url, headers, proxies=select_proxies, timeout=5)
     except Exception as Err:
         # if failed to use proxy, will try to connect with local IP
         print(f"Proxy servers is down, Error: {Err}, local host IP being used")
         try:
             # trying to connect with from local host if timeout.
             req = requests.get(url, headers)
+
         except Exception as Err:
             print("Failed to connect to remote server", Err)
 
