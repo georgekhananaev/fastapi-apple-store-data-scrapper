@@ -1,11 +1,9 @@
 import uvicorn as uvicorn
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-
 from components.dataBuilder import *
 
 app = FastAPI()
-
 
 description = '''Top 100 apple store web scrapper with API. Based on Python FastAPI library. This tool was created as a home exercise request from Peer39 for eduction purposes only.'''
 
@@ -15,10 +13,9 @@ tags_metadata = [
         "description": "Get everything you need in BULK such as hot products",
     },
     {
-        "name": "Single Request",
+        "name": "Single App Requests",
         "description": "Get everything you need in BULK such as hot products",
     },
-
 
 ]
 
@@ -51,7 +48,7 @@ app.add_middleware(
 )
 
 
-@app.get('/app/{app_id}', tags=["Single Request"])
+@app.get('/app/{app_id}', tags=["Single App Requests"])
 async def top_free_apps(app_id: int, country_code: str | None = Query(default="us")):
     """
         Insert "APP ID" such as: 1643890882, the value should be numbers only.
@@ -60,16 +57,47 @@ async def top_free_apps(app_id: int, country_code: str | None = Query(default="u
     return single_app(url=f"https://apps.apple.com/{country_code}/app/netflix/id{app_id}", country_code=country_code)
 
 
-@app.get('/top-free-apps', tags=["Top Apps"])
+@app.get('/top100-free-apps', tags=["Top Apps"])
 async def top_free_apps():
-    top_100(url="https://apps.apple.com/us/charts/iphone/top-free-apps/36", dict=top_hundred_free_memory)
+
+    # checking if value exist in memory and not older than 1 day before running the fetch.
+    if len(top_hundred_free_memory) < 100 and check_date_in_dictionary(top_hundred_free_memory):
+        top_100(url="https://apps.apple.com/us/charts/iphone/top-free-apps/36", dict=top_hundred_free_memory)
+
     return top_hundred_free_memory
 
 
-@app.get('/top-paid-apps', tags=["Top Apps"])
+@app.get('/top100-paid-apps', tags=["Top Apps"])
 async def top_paid_apps():
-    top_100(url="https://apps.apple.com/us/charts/iphone/top-paid-apps/36", dict=top_hundred_paid_memory)
+
+    # checking if value exist in memory and not older than 1 day before running the fetch.
+    if len(top_hundred_paid_memory) < 100 and check_date_in_dictionary(top_hundred_paid_memory):
+        top_100(url="https://apps.apple.com/us/charts/iphone/top-paid-apps/36", dict=top_hundred_paid_memory)
+
     return top_hundred_paid_memory
+
+
+@app.get('/top100-free-apps-detailed', tags=["Top Apps"])
+async def top_free_apps_with_information_for_every_single_app():
+    """
+             Please note: first run might take several minutes. As it scrapping data for every single APP in this list. Once loaded, cache is generated. Next fetches will be much quicker.
+            """
+    if len(top_hundred_detailed_free_memory) < 100 and check_date_in_dictionary(top_hundred_detailed_free_memory):
+        top_100_detailed(url="https://apps.apple.com/us/charts/iphone/top-free-apps/36",
+                         dict=top_hundred_detailed_free_memory)
+    return top_hundred_detailed_free_memory
+
+
+@app.get('/top100-paid-apps-detailed', tags=["Top Apps"])
+async def top_paid_apps_with_information_for_every_single_app():
+    """
+             Please note: first run might take several minutes. As it scrapping data for every single APP in this list. Once loaded, cache is generated. Next fetches will be much quicker.
+            """
+
+    if len(top_hundred_detailed_paid_memory) < 100 and check_date_in_dictionary(top_hundred_detailed_paid_memory):
+        top_100_detailed(url="https://apps.apple.com/us/charts/iphone/top-paid-apps/36",
+                         dict=top_hundred_detailed_paid_memory)
+    return top_hundred_detailed_paid_memory
 
 
 if __name__ == "__main__":
