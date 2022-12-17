@@ -2,7 +2,7 @@
 
 ![Generic badge](https://img.shields.io/badge/Python_3.11-Supported-green.svg)
  
-#### Demo: https://demo_apple_scrapper.khananaev.com
+#### Demo: [https://appsp.khananaev.com/docs](https://appsp.khananaev.com/docs)
 
 ### Usage:
 1. clone this repo 
@@ -17,7 +17,7 @@
 2. Top 100 Paid Apps.
 3. Top 100 Free + specifications for every single app.
 4. Top 100 Paid + specifications for every single app.
-5. Fetch a app specifications + URL by ID.
+5. Fetch App specifications + URL by App ID.
 
 
 ### Key features:
