@@ -24,15 +24,7 @@ app = FastAPI(title="Apple Store Scrapper",  # noqa
               version="1.0.0",
               terms_of_service="https://github.com/georgekhananaev/aliexpress-open-api/blob/main/LICENSE",
               openapi_tags=tags_metadata,
-              contact={
-                  "name": "George Khananaev",
-                  "url": "https://george.khananaev.com", "email": "george.khananaev@gmail.com",
-              },
-              # license_info={
-              #     "name": "Apache 2.0",
-              #     "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
-              # },
-              )  # disable docs add: docs_url=None
+              contact={"name": "George Khananaev", "url": "https://george.khananaev.com", "email": "george.khananaev@gmail.com"})
 
 origins = [
     "*",

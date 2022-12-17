@@ -6,7 +6,7 @@ from components.supportFunctions import *
 def single_app(**kwargs) -> list or dict:
     app_id = kwargs["url"].partition("id")[2]
     country = kwargs["country_code"]
-    cache_file = f"cache/apps/{app_id}{country}.json"
+    cache_file = f"./cache/apps/{app_id}{country}.json"
 
     # loading local file as cache if exist
     if os.path.exists(cache_file):
@@ -87,7 +87,7 @@ def single_app(**kwargs) -> list or dict:
 # this function receiving parameters from-outside and building dictionaries from it without return value.
 def top_100(**kwargs) -> None:
     filename = "top_free" if top_hundred_free_memory is kwargs["dict"] else "top_paid"
-    cache_file = f"cache/top100/{filename}.json"
+    cache_file = f"./cache/top100/{filename}.json"
 
     try:
         results = scrapper(kwargs["url"]).find(id="charts-content-section")
@@ -129,7 +129,7 @@ def top_100(**kwargs) -> None:
 # scanning every single product in top100 list and building cache data from it.
 def top_100_detailed(**kwargs) -> None:
     filename = "top_free_detailed" if top_hundred_detailed_free_memory is kwargs["dict"] else "top_paid_detailed"
-    cache_file = f"cache/top100/{filename}.json"
+    cache_file = f"./cache/top100/{filename}.json"
 
     try:
         results = scrapper(kwargs["url"]).find(id="charts-content-section")
