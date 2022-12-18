@@ -70,16 +70,12 @@ def single_app(**kwargs) -> list or dict:
                     json.dump(app_data, outfile)
             else:
                 raise Exception("The data is empty, error will be thrown")
-
             # new fetched data output to API
             return app_data
 
         # handing exception
         except Exception as Err:
             print(Err)  # print the error to console
-
-            # error output, to api
-            print(Err)
             return {
                 "Error": "Data returned empty from origin server"}  # throw the error to API interface instead of returning empty array
 
@@ -115,18 +111,21 @@ def top_100(**kwargs) -> None:
 
     # handing exception
     except Exception as Err:
+        # throw the error to API interface instead of returning empty array
         if os.path.exists(cache_file):
             with open(cache_file, 'r') as f:
                 data = json.load(f)
-                kwargs["dict"].update(data)  # throw the error to API interface instead of returning empty array
+                kwargs["dict"].update(data)
                 print('Due to an error, cache file been loaded')
 
         else:
+            # throw the error to API interface instead of returning empty array
             kwargs["dict"].update({"Error": "Remote server returned error, try again"})
         print(Err)  # print the error to console
 
 
 # scanning every single product in top100 list and building cache data from it.
+# this function basically is a clone of the function above with minor changes. Can make the code shorter by migrating these.
 def top_100_detailed(**kwargs) -> None:
     filename = "top_free_detailed" if top_hundred_detailed_free_memory is kwargs["dict"] else "top_paid_detailed"
     cache_file = f"./cache/top100/{filename}.json"
@@ -161,9 +160,11 @@ def top_100_detailed(**kwargs) -> None:
     except Exception as Err:
         if os.path.exists(cache_file):
             with open(cache_file, 'r') as f:
+                # if error, it will try to load cache file.
                 data = json.load(f)
-                kwargs["dict"].update(data)  # throw the error to API interface instead of returning empty array
+                kwargs["dict"].update(data)
                 print('Due to an error, cache file been loaded')
         else:
+            # throw the error to API interface instead of returning empty array
             kwargs["dict"].update({"Error": "Remote server returned error, try again"})
         print(Err)  # print the error to console

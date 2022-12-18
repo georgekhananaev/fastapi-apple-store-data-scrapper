@@ -41,7 +41,7 @@ app.add_middleware(
 
 
 @app.get('/app/{app_id}', tags=["Single App Requests"])
-async def top_free_apps(app_id: int, country_code: str | None = Query(default="us")):
+async def get_single_app(app_id: int, country_code: str | None = Query(default="us")):
     """
         Insert "APP ID" such as: 1643890882, the value should be numbers only.
         The country code can be "us, gb, il" or anything else supported by Apple.

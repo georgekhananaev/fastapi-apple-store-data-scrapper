@@ -46,7 +46,7 @@ def find_if_value_exist(input_value, input_multi_dict) -> bool:
         return False
 
 
-# converting list into dictionary with lambda
+# converting list into dictionary with map & lambda
 def Convert(lst) -> dict:
     res_dct = map(lambda i: (lst[i], lst[i + 1]), range(len(lst) - 1)[::2])
     return dict(res_dct)
